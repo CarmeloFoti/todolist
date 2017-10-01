@@ -19,6 +19,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/1.0.3/angular-ui-router.min.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js" ></script>
 <script src="js/app.js"></script>
+<script src="js/controller/TodoController.js"></script>
+
 
 
 
