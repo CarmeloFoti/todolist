@@ -47,8 +47,8 @@ angular.module('todoApp').controller('TodoController',
         $scope.patchTodo = function (todo) {
             $http({
                 method: 'PATCH',
-                url: todo._links.self.href,
-                data: {name: todo.name}
+                url: '/todo/'+todo.id,
+                data: {text: todo.text}
             }).then(function success (response){
                 refreshTodo();
             },function error(response) {

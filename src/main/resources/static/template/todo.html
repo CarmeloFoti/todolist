@@ -1,8 +1,15 @@
 
 <div class="container">
     <div class="row" ng-repeat="todo in todos">
-        <div class="col-md-6 text-primary">{{todo.text}}</div>
-        <div class="col-md-3">
+        <input class="col-sm-6 text-primary" ng-model="todo.text">
+
+        </input>
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-primary" ng-click="patchTodo(todo)">
+                Modify todo
+            </button>
+        </div>
+        <div class="col-sm-2">
             <button type="button" class="btn btn-primary" ng-click="deleteTodo(todo)">
                 Delete todo
             </button>
@@ -18,7 +25,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">todo Name</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Please insert todo text</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>

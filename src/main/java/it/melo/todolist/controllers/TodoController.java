@@ -42,7 +42,7 @@ public class TodoController {
     public ResponseEntity<?> getTodo(@PathVariable("id") long id) {
         log.debug("Requested Todo with id: "+id);
 
-        Todo todo = todoRepository.getOne(id);
+        Todo todo = todoRepository.findOne(id);
         if (todo == null) {
             log.warn("Invalid todo requested: "+id);
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -61,14 +61,45 @@ public class TodoController {
     @RequestMapping(value = "/todo/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteTodo(@PathVariable("id") long id) {
 
-        Todo todo = todoRepository.getOne(id);
+        Todo todo = todoRepository.findOne(id);
         if (todo == null) {
             log.warn("Invalid todo to delete requested: "+id);
             return new ResponseEntity(
                     HttpStatus.NOT_FOUND);
         }
         todoRepository.delete(id);
-        return new ResponseEntity<Todo>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @RequestMapping(value = "/todo/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> replace(@PathVariable("id") long id, @RequestBody Todo todo) {
+        log.debug("Updating Todo with id: "+id);
+
+        Todo oldTodo = todoRepository.findOne(id);
+
+        if (oldTodo == null) {
+            log.warn("Invalid todo to delete requested: "+id);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+
+        oldTodo.setText(todo.getText());
+        todoRepository.save(oldTodo);
+        return new ResponseEntity<>(oldTodo, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/todo/{id}", method = RequestMethod.PATCH)
+    public ResponseEntity<?> updateUser(@PathVariable("id") long id, @RequestBody Todo todo) {
+        log.debug("Updating Todo with id: "+id);
+
+        Todo oldTodo = todoRepository.findOne(id);
+
+        if (oldTodo == null) {
+            log.warn("Invalid todo to delete requested: "+id);
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
+        if (todo.getText()!=null) {
+            oldTodo.setText(todo.getText());
+            todoRepository.save(oldTodo);
+        }
+        return new ResponseEntity<>(oldTodo, HttpStatus.OK);
+    }
 }
