@@ -31,10 +31,12 @@ public class TodoController {
     @RequestMapping(value = "/todo/", method = RequestMethod.GET)
     public ResponseEntity<List<Todo>> listAllTodos() {
         List<Todo> todoList = todoRepository.findAll();
+
         if (todoList.isEmpty()){
          log.debug("Requested empty Todo list");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
+        log.debug("Requesting all the "+todoList.size()+ " Todos");
         return new ResponseEntity<>(todoList, HttpStatus.OK);
     }
 
@@ -53,6 +55,7 @@ public class TodoController {
     @RequestMapping(value = "/todo/", method = RequestMethod.POST)
     public ResponseEntity<?> createTodo(@RequestBody Todo todo, UriComponentsBuilder ucBuilder) {
         todoRepository.save(todo);
+        log.debug("Created Todo with id: "+todo.getId());
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{id}").buildAndExpand(todo.getId()).toUri());
         return new ResponseEntity<String>(headers, HttpStatus.CREATED);
@@ -67,6 +70,8 @@ public class TodoController {
             return new ResponseEntity(
                     HttpStatus.NOT_FOUND);
         }
+        log.debug("Deleting Todo with id: "+id);
+
         todoRepository.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
